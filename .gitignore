@@ -1,19 +1,17 @@
-# Build and Release Folders
 bin/
-bin-debug/
-bin-release/
-[Oo]bj/ # FlashDevelop obj
-[Bb]in/ # FlashDevelop bin
-
-# Other files and folders
-.settings/
-
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
-
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+.DS_Store
+.AppleDouble
+.gitignore
+.bowerrc
+bower.json
+gulpfile.js
+package.json
+lib
+node_modules
+npm-debug.log
+bower-command.txt
+npm-commands.txt
+frequentRegex.txt
+package-orig.json
+public
+assets/build
