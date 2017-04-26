@@ -1,2 +1,2 @@
-# browserSync_login_Signup_Mlab
-clean_angular1_browserSync_login_Signup_Mlab
+# passport-jwt-simple-auth
+clean_angular1_passport-jwt-simple-auth
