@@ -5,40 +5,49 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var portReq = require('port'),
-    port = process.env.PORT || 6060;
+var mongoose = require('mongoose');
+var cfg = require('./config');
+var passport = require('passport');
+var jwt = require('jsonwebtoken');
 
 var app = express();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+// get post request from api
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', routes);
-// app.use('/users', users);
-app.listen(port, function (err) {
-  ListenErrorMessage(err);
-  console.log('listening on %s.', port);
+mongoose.connect(cfg.database);
+
+mongoose.connection.on('connected', function () {
+    console.log('40 -- connect to mlab correctly.');
 });
 
-function ListenErrorMessage (errMesg) {
-  if(errMesg){
-    console.log('error message is: -- '+errMesg);
-  }else{
-    console.log('currentApp port No Error.');
-  }
-};
+mongoose.connection.on('error', function () {
+    console.log('44 -- Mlab connection had error.');
+});
+
+mongoose.connection.on('disconnected', function () {
+    console.log('48 -- Mlab is disconnected.');
+});
+
+// port is 6060, check www -- this is sample content for index page, see result in localhost:6060
+app.get('/', function (req, res) {
+    res.send('this is homepage...');
+})
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
@@ -46,23 +55,23 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
     });
-  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
 
